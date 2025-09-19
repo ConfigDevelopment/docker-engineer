@@ -12,8 +12,9 @@
   - [3.6 Cấu hình PATH cho Docker](#36-cấu-hình-path-cho-docker)
   - [3.7 Khởi động Docker Service](#37-khởi-động-docker-service)
   - [3.8  Đồng bộ dữ liệu Docker cũ (tuỳ chọn)](#37-khởi-động-docker-service)
-- [4. Kiểm tra Docker](#4-kiểm-tra-docker)
-- [5. Lưu ý quan trọng](#5-lưu-ý-quan-trọng)
+- [4. Cài đặt Docker Compose](#4-cài-đặt-docker-compose)
+- [5. Kiểm tra Docker](#5-kiểm-tra-docker)
+- [6. Lưu ý quan trọng](#6-lưu-ý-quan-trọng)
 
 ---
 
@@ -93,18 +94,45 @@ Start-Service docker
 New-Item -ItemType Directory -Force -Path "C:\ProgramData\docker\config"
 robocopy "C:\ProgramData\docker" "D:\Program Files\Docker\docker-data" /MIR
 ```
-## 4. Kiểm tra Docker
+
+## 4. Cài đặt Docker Compose
+- **Tải Docker Compose binary** Vào GitHub release: 👉 https://github.com/docker/compose/releases Chọn bản mới nhất (VD: `docker-compose-windows-x86_64.exe`).
+- Lệnh(Oprional)
+```powershell
+$composeUrl = "https://github.com/docker/compose/releases/latest/download/docker-compose-windows-x86_64.exe"
+Invoke-WebRequest -Uri $composeUrl -OutFile "D:\Program Files\Docker\cli-plugins\docker-compose-windows-x86_64.exe"
+```
+- **Copy vào thư mục CLI plugins** Ví dụ:
+```powershell
+# Tạo thư mục cli-plugins nếu chưa có
+New-Item -ItemType Directory -Path "D:\Program Files\Docker\cli-plugins\" -Force
+```
+- **Đổi tên file thành**:
+
+```powershell
+Rename-Item -Path "D:\Program Files\Docker\cli-plugins\docker-compose-windows-x86_64.exe" -NewName "docker-compose.exe"
+```
+
+4. **Thêm vào PATH** (nếu chưa có):
+   * Mở **Environment Variables** → `Path` → thêm đường dẫn:
+
+```
+D:\Program Files\Docker\cli-plugins\
+```
+
+## 5. Kiểm tra Docker
 - Kiểm tra version
 ```powershell
 docker version
 docker info
+docker-compose --version
 ```
 - Test
 ```powershell
 docker pull hello-world:nanoserver
 docker run --rm hello-world:nanoserver
 ```
-## 5. Lưu ý quan trọng
+## 6. Lưu ý quan trọng
 - Backup nếu cần giữ images/containers quan trọng.
 - Luôn Stop-Service docker trước khi di chuyển dữ liệu.
 - Đường dẫn trong JSON cần escape: D:\\path\\to\\dir.
