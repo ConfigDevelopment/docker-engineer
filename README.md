@@ -57,7 +57,11 @@ New-Item -ItemType Directory -Path "D:\Program Files\Docker\docker-data"
   - Docker Engine trên Windows dùng file : C:\ProgramData\docker\config\daemon.json
   - Nếu chưa có thì mình tự tạo mới
   ```powershell
-  New-Item -ItemType Directory -Path "D:\Program Files\Docker\docker-data"
+  # Tạo thư mục config nếu chưa có
+  New-Item -ItemType Directory -Path "C:\ProgramData\docker\config" -Force
+
+  # Tạo file daemon.json rỗng
+  New-Item -ItemType File -Path "C:\ProgramData\docker\config\daemon.json" -Force
   ```
 - Chỉnh sửa daemon.json
   - Lệnh chỉnh sửa
